@@ -100,7 +100,7 @@ def register(clientID):
 # Added by Fabian in order to cover the Rhythm API
 # Returns a list of gnmetadata dictionaries 
 
-def createRadio(clientID='', userID='', artist='', track='', mood='', era='', genre='', popularity ='', similarity = '', count='10'):
+def createRadio(clientID='', userID='', artist='', track='', mood='', era='', genre='', popularity ='', similarity = '', count='10', multiple_seeds = False):
 	"""
 	Queries a Radio playlist
 	"""
@@ -120,8 +120,17 @@ def createRadio(clientID='', userID='', artist='', track='', mood='', era='', ge
 	
 	query.addQuery('RADIO_CREATE')
 	
-	if artist!='' or track!='':
-		query.addTextSeed(artist,track)
+
+	# adding in the functionality to have multiple seeds
+
+	if multiple_seeds:
+		if artist!='' or track!='':
+			for idx, i in enumerate(track):
+				query.addTextSeed(artist[idx],track[idx])
+	else:
+		if artist!='' or track!='':
+			query.addTextSeed(artist,track)
+
 
 	
 	if mood!='' or era!='' or genre!='':
